@@ -23,40 +23,83 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     let divs = block.querySelectorAll('div');
     divs.forEach(div => div.appendChild(addCheckbox(div)));
-    closeOrOpenDiv(block);
-    for (let i = 0; i < block.children.length; i++) {
-        closeOrOpenDiv(block.children[i]);
-    }
+
+    block.addEventListener('click', (e) => {
+        switchCheckbox(e);
+        trigger(e);
+
+        closeOrOpenDiv(block, e);
+        for (let i = 0; i < block.children.length; i++) {
+            closeOrOpenDiv(block.children[i], e);
+        }
+    })
 
 });
 
-function closeOrOpenDiv(div){
-    div.addEventListener('click', (e) => {
-        const blockChildren = div.children;
-        for (let i = 0; i < blockChildren.length; i++) {
-            if(blockChildren[i].id === e.target.id){
-                const zoneChildren = blockChildren[i].children;
+function trigger(e){
+    if(e.target.className === "checkbox" && e.target.checked === true && e.target.parentElement.className === "punktir"){
+        let checkbox = e.target.parentElement.parentElement.lastChild;
 
-                for (let i = 0; i < zoneChildren.length; i++){
-                    if(zoneChildren[i].style.display === 'block') {
-                        if(zoneChildren[i].tagName === 'INPUT'){
-                            zoneChildren[i].checked = false;
-                        }else{
-                            zoneChildren[i].style.display = 'none';
-                        }
-                    }else{
-                        zoneChildren[i].checked = true;
-                        zoneChildren[i].style.display = 'block';
-                    }
+        if(checkbox.checked === true){
+            return;
+        }
+
+        checkbox.checked = true;
+        checkbox = e.target.parentElement.parentElement.parentElement.lastChild;
+        checkbox.checked = true;
+    }
+
+    if(e.target.className === "checkbox" && e.target.checked === true && e.target.parentElement.className === "section"){
+        let checkbox = e.target.parentElement.parentElement.lastChild;
+        console.log(checkbox);
+        if(checkbox.checked === true){
+            return;
+        }
+        checkbox.checked = true;
+    }
+}
+function closeOrOpenDiv(div, e){
+    const blockChildren = div.children;
+    for (let i = 0; i < blockChildren.length; i++) {
+        if(blockChildren[i].id === e.target.id && e.target.type !== "checkbox"){
+            const zoneChildren = blockChildren[i].children;
+
+            for (let i = 0; i < zoneChildren.length; i++){
+                if(zoneChildren[i].style.display === 'none') {
+                    zoneChildren[i].style.display = 'block';
+                }else if(zoneChildren[i].tagName !== 'INPUT'){
+                    zoneChildren[i].style.display = 'none';
                 }
             }
         }
-    })
+    }
+}
+function switchCheckbox(e){
+    let section = e.target.parentElement
+    if(e.target.className === "checkbox") {
+        let punktir = section.children;
+        for (let i = 0; i < punktir.length; i++) {
+            let divLastChild = punktir[i].lastChild;
+            let lastChild = punktir[i].children;
+            if (divLastChild && divLastChild.type === "checkbox") {
+                divLastChild.checked = divLastChild.checked !== true;
+            }
+            for (let i = 0; i < lastChild.length; i++) {
+                let last = lastChild[i].lastChild;
+                if (last && last.type === "checkbox") {
+                    last.checked = last.checked !== true;
+                }
+            }
+        }
+    }
 }
 function creatDiv(obj, str){
     let div = document.createElement('div');
     div.innerHTML = obj.title;
     div.className = str;
+    if(str !== "zone"){
+        div.style.display = "none";
+    }
     div.id = obj.id;
     return div;
 }
@@ -66,6 +109,6 @@ function addCheckbox(div){
     check.id = div.id;
     check.className = 'checkbox';
     check.type = "checkbox";
-    check.checked = true;
+    check.checked = false;
     return check;
 }
