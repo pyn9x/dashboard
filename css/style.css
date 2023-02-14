@@ -1,10 +1,23 @@
 #container{
     margin-left: auto;
     margin-right: auto;
-    width: 15em
+    width: 30em;
+    color: white;
+    padding: 0.5em 1em 1em 1em;
+}
+
+.head{
+    background: #303652;
+    padding: 0.5em;
+    border:0.1em solid #011834;
+}
+
+body{
+    background: #232d3d;
 }
 
 div{
+    padding-left: 1em;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
     -khtml-user-select: none;    /* Konqueror */
@@ -14,23 +27,16 @@ div{
 }
 
 .section{
-    margin-left: 1rem;
-    border-radius: 5px;
-    border: 1px solid #000;
     position: relative;
 }
 
 .punktir{
-    margin-left: 2rem;
-    border-radius: 5px;
-    border: 1px solid #000;
     position: relative;
 }
 
 .zone{
-    border-radius: 5px;
-    border: 1px solid #000;
     position: relative;
+    background: #303c52;
 }
 
 .checkbox{
